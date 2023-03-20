@@ -40,10 +40,20 @@
         var planeGeom = new THREE.PlaneGeometry(10, 10);
         var planeMat = new THREE.MeshBasicMaterial({
           color: 0xffffff,
-          map: texture
+          map: texture[0]
+        });
+        var planeMat1 = new THREE.MeshBasicMaterial({
+          color: 0xffffff,
+          map: texture[1]
+        });
+        var planeMat2 = new THREE.MeshBasicMaterial({
+          color: 0xffffff,
+          map: texture[2]
         });
         var planeMesh = new THREE.Mesh(planeGeom, planeMat);
-        scene.add(planeMesh);
+        var planeMesh1 = new THREE.Mesh(planeGeom, planeMat1);
+        var planeMesh2 = new THREE.Mesh(planeGeom, planeMat2);
+        scene.add(planeMesh1);
 
         // repeat texture mapping on right panel
         var planeMeshR = planeMesh.clone();
@@ -53,7 +63,7 @@
         scene.add(planeMeshR);
 
         // repeat texture mapping on left panel
-        var planeMeshL = planeMesh.clone();
+        var planeMeshL = planeMesh2.clone();
         planeMeshL.position.set(-5 - dist, 0, dist);
         planeMeshL.rotation.y = Math.PI / 4;
         scene.add(planeMeshL);
@@ -79,10 +89,13 @@
       // load the relaxation.jpg image (stored in the same folder as this webpage),
       // and when the image load is complete, invoke the anonymous function callback
 
-      loader.load("relaxation.jpg",
-        function (texture) {
-          displayPanels(texture);
+      loader.load('./images/GU-ISE0.jpg', (texture) => {
+        loader.load('./images/GU-ISE1.jpg', (texture1) => {
+          loader.load('./images/GU-ISE2.jpg', (texture2) => {
+            displayPanels([texture2, texture1, texture]);
+          });
         });
+      });
 
     </script>
   </p>
